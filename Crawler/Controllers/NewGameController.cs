@@ -17,6 +17,10 @@ namespace GameOfThronesCrawler.Controllers
             _httpClient = httpClientFactory.CreateClient();
         }
 
+        /// <summary>
+        /// Endpoint to get a list of GameQuestions
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {

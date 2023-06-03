@@ -1,5 +1,9 @@
-﻿using GameOfThronesCrawler.Models;
+﻿using GameOfThronesCrawler.Database;
+using GameOfThronesCrawler.Helpers;
+using GameOfThronesCrawler.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq.Expressions;
 
 namespace GameOfThronesCrawler.Controllers
 {
@@ -7,6 +11,18 @@ namespace GameOfThronesCrawler.Controllers
     [Route("[controller]")]
     public class UserScoreController : ControllerBase
     {
+        private readonly IMongoRepository<GameStats> _gameStatsRepository;
+
+        public UserScoreController(IMongoRepository<GameStats> gameStatsRepository)
+        {
+            _gameStatsRepository = gameStatsRepository;
+        }
+
+        /// <summary>
+        /// Endpoint to receive a NewGame object and return the ScoreResult
+        /// </summary>
+        /// <param name="newGame"></param>
+        /// <returns></returns>
         [HttpPost("Post")]
         public IActionResult Post([FromBody] NewGame newGame)
         {
@@ -15,81 +31,39 @@ namespace GameOfThronesCrawler.Controllers
                 return BadRequest("Invalid game data");
             }
 
-            int score = CalculateUserScore(newGame.Questions);
-            var characterProportions = CalculateCharacterProportions(newGame.Questions);
-            string favoriteCharacter = GetFavoriteCharacter(characterProportions);
+            int score = ScoreCalculator.CalculateUserScore(newGame.Questions);
+            var characterProportions = ScoreCalculator.CalculateCharacterProportions(newGame.Questions);
+            string favoriteCharacter = ScoreCalculator.GetFavoriteCharacter(characterProportions);
 
             var result = new ScoreResult
             {
+                UserName = newGame.UserName,
                 Score = score,
                 FavoriteCharacter = favoriteCharacter
             };
 
+            GameStats gameStats = new();
+            gameStats.UserName = newGame.UserName;
+            gameStats.GivenAnswers = newGame.Questions;
+            gameStats.Score = score;
+
+            _gameStatsRepository.InsertOne(gameStats);
+
             return Ok(result);
         }
 
-        #region Helper functions
-        private Dictionary<string, int> CalculateCharacterProportions(List<GameQuestion> questions)
+        /// <summary>
+        /// Endpoint to delete all scores in the database
+        /// </summary>
+        /// <param name="newGame"></param>
+        /// <returns></returns>
+        [HttpDelete("Delete")]
+        public IActionResult Delete()
         {
-            var characterCounts = new Dictionary<string, int>();
+            Expression<Func<GameStats, bool>> filterExpression = x => true;
+            _gameStatsRepository.DeleteMany(filterExpression);
 
-            foreach (var question in questions)
-            {
-                var selectedOption = question.Options.FirstOrDefault(option => option.IsSelected && option.IsCorrect);
-
-                if (selectedOption != null)
-                {
-                    if (characterCounts.ContainsKey(selectedOption.Option))
-                    {
-                        characterCounts[selectedOption.Option]++;
-                    }
-                    else
-                    {
-                        characterCounts[selectedOption.Option] = 1;
-                    }
-                }
-            }
-
-            return characterCounts;
+            return Ok();
         }
-
-        private int CalculateUserScore(List<GameQuestion> questions)
-        {
-            int score = 0;
-
-            foreach (var question in questions)
-            {
-                if (IsAnswerCorrect(question))
-                {
-                    score++;
-                }
-            }
-
-            return score;
-        }
-
-        private string GetFavoriteCharacter(Dictionary<string, int> characterProportions)
-        {
-            if (characterProportions.Count == 0)
-            {
-                return "No favorite character";
-            }
-
-            int maxCount = characterProportions.Values.Max();
-            if(characterProportions.Values.Where(x => x == maxCount).Count() > 1)
-            {
-                return "No favorite character";
-            }
-
-            string favoriteCharacter = characterProportions.FirstOrDefault(x => x.Value == maxCount).Key;
-
-            return favoriteCharacter;
-        }
-
-        private bool IsAnswerCorrect(GameQuestion question)
-        {
-            return question.Options.Any(option => option.IsCorrect && option.IsSelected);
-        }
-        #endregion
     }
 }
