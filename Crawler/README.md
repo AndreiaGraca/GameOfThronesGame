@@ -1,3 +1,7 @@
+##Executar o crawler
+- docker-compose build
+- docker-compose up
+
 ## Endpoints
 
 #### Swagger

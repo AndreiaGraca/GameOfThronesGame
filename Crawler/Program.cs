@@ -11,41 +11,25 @@ namespace GameOfThronesCrawler
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //var client = new MongoClient($@"mongodb://root:example@localhost:27017");
-            //var database = client.GetDatabase("SampleDb");
-            //var collection = database.GetCollection<GameStats>("SampleDb");
-
-            //collection.InsertOne(new GameStats
-            //{
-            //    UserName = "SampleValue"
-            //});
-
-            // Add services to the container.
-
             //MongoDB
 
             // Connection string and database name
-            string connectionString = "mongodb://root:example@localhost:27017";
-            string databaseName = "gameofthrones";
+            //string connectionString = "mongodb://localhost:27017";
+            //string databaseName = "gameofthrones";
 
-            // Create a MongoClient to connect to the MongoDB server
-            MongoClient client = new MongoClient(connectionString);
+            //// Create a MongoClient to connect to the MongoDB server
+            //MongoClient client = new MongoClient(connectionString);
 
-            // Access the database
-            IMongoDatabase database = client.GetDatabase(databaseName);
+            //// Access the database
+            //IMongoDatabase database = client.GetDatabase(databaseName);
 
-            // Check if the collection exists, create it if not
-            string collectionName = "scores";
-            bool collectionExists = CollectionExists(database, collectionName);
-            if (!collectionExists)
-            {
-                CreateCollection(database, collectionName);
-                Console.WriteLine("Collection created successfully!");
-            }
-            else
-            {
-                Console.WriteLine("Collection already exists!");
-            }
+            //// Check if the collection exists, create it if not
+            //string collectionName = "scores";
+            //bool collectionExists = CollectionExists(database, collectionName);
+            //if (!collectionExists)
+            //{
+            //    CreateCollection(database, collectionName);
+            //}
 
             builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 
@@ -59,15 +43,14 @@ namespace GameOfThronesCrawler
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
 
             app.UseHttpsRedirection();
 
@@ -79,20 +62,20 @@ namespace GameOfThronesCrawler
             app.Run();
         }
 
-        private static bool CollectionExists(IMongoDatabase database, string collectionName)
-        {
-            // List all the collections in the database
-            var filter = new BsonDocument("name", collectionName);
-            var collections = database.ListCollections(new ListCollectionsOptions { Filter = filter });
+        //private static bool CollectionExists(IMongoDatabase database, string collectionName)
+        //{
+        //    // List all the collections in the database
+        //    var filter = new BsonDocument("name", collectionName);
+        //    var collections = database.ListCollections(new ListCollectionsOptions { Filter = filter });
 
-            // Check if the collection exists
-            return collections.Any();
-        }
+        //    // Check if the collection exists
+        //    return collections.Any();
+        //}
 
-        private static void CreateCollection(IMongoDatabase database, string collectionName)
-        {
-            // Create the collection with default options
-            database.CreateCollection(collectionName);
-        }
+        //private static void CreateCollection(IMongoDatabase database, string collectionName)
+        //{
+        //    // Create the collection with default options
+        //    database.CreateCollection(collectionName);
+        //}
     }
 }
