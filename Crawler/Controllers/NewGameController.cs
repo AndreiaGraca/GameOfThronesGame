@@ -1,6 +1,10 @@
-﻿using GameOfThronesCrawler.Models;
+﻿using GameOfThronesCrawler.Helpers;
+using GameOfThronesCrawler.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace GameOfThronesCrawler.Controllers
 {
@@ -74,20 +78,59 @@ namespace GameOfThronesCrawler.Controllers
         private List<GameQuestionOption> ShuffleCharacters(string correctOption)
         {
             //TODO: Substitute Characters with actual names
-            var options = new List<GameQuestionOption>
-            {
-                new GameQuestionOption { Option = correctOption, IsCorrect = true},
-                new GameQuestionOption { Option = "Character 2", IsCorrect = false},
-                new GameQuestionOption { Option = "Character 3", IsCorrect = false },
-                new GameQuestionOption { Option = "Character 4", IsCorrect = false}
-            };
+            var options = new List<GameQuestionOption>();
 
-        // Shuffling the characters
+            options.Add(new GameQuestionOption { Option = correctOption, IsCorrect = true });
+
+            // Select three random character names excluding the correct option
+
+            var characterNames = GetCharacters.ReadCharactersFromJson();
             var random = new Random();
+            var availableOptions = characterNames.Where(name => name != correctOption).ToList();
+            var selectedOptions = SelectThreeRandomStrings(availableOptions);
+            options.AddRange(selectedOptions.Select(opt => new GameQuestionOption
+            {
+                Option = opt,
+                IsCorrect = false,
+                IsSelected = false
+            }));
+
+            // Shuffling the characters
             var shuffledCharacters = options.OrderBy(x => random.Next()).ToList();
 
             return shuffledCharacters;
         }
+
+        public static List<string> SelectThreeRandomStrings(List<string> strings)
+        {
+            Random random = new Random();
+
+            List<string> selectedStrings = new List<string>();
+
+            // Check if the list contains at least three strings
+            if (strings.Count < 3)
+            {
+                throw new ArgumentException("The list must contain at least three strings.");
+            }
+
+            // Select three random indices without repetition
+            HashSet<int> indices = new HashSet<int>();
+            while (indices.Count < 3)
+            {
+                int randomIndex = random.Next(strings.Count);
+                indices.Add(randomIndex);
+            }
+
+            // Add the selected strings to the result list
+            foreach (int index in indices)
+            {
+                selectedStrings.Add(strings[index]);
+            }
+
+            return selectedStrings;
+        }
+
+
         #endregion
     }
 }

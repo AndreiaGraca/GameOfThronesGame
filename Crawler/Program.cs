@@ -52,6 +52,16 @@ namespace GameOfThronesCrawler
                 app.UseSwaggerUI();
             //}
 
+            app.UseCors(builder => builder
+            .AllowAnyOrigin() // Allow requests from any origin
+            .AllowAnyMethod() // Allow all HTTP methods
+            .AllowAnyHeader() // Allow all headers
+        );
+
+            // Other app configurations...
+
+            app.UseRouting();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
