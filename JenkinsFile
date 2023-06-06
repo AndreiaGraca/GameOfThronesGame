@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+     
+    stages {
+       stage('GitHub Commit') {
+          steps {
+            // Lógica para lidar com o commit do GitHub
+            echo "GitHub commit detected"
+    }
+}
+        stage('Build'){
+            steps{
+              echo "Building the project"
+            }
+      }  
+        stage('Ok') {
+            steps {
+                echo "Ok"
+            }
+        }
+    }
+    post {
+        always {
+            emailext body: 'Hello ',  to: '4117andreiagraca@aefv.edu.pt, patriciagameiroit@gmail.com',recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+        }
+    }
+}
