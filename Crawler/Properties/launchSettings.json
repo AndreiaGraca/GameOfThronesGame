@@ -25,7 +25,8 @@
       "publishAllPorts": true,
       "useSSL": true,
       "httpPort": 7093,
-      "sslPort": 7094
+      "sslPort": 7094,
+      "DockerfileRunArguments": "--network=gotnetwork"
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",
