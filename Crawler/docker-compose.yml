@@ -21,16 +21,6 @@ services:
     networks:
       - gotnetwork
     environment:
-      #- VIRTUAL_HOST=sub.domain-example.com
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:80
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certificates:/etc/certificates
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
-volumes:
-  certificates:
 networks:
   gotnetwork:
