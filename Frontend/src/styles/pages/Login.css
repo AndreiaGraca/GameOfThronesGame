@@ -1,0 +1,37 @@
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+.h-custom {
+    height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+    .h-custom {
+        height: 100%;
+    }
+}
+
+#btn_login_1 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    text-transform: capitalize;
+    margin-left: 0px;
+}
+
+#btn_login_2 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    text-transform: capitalize;
+}
+
+#btn_login_3 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    text-transform: capitalize;
+    margin-left: 0px;
+}
