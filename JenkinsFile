@@ -6,9 +6,9 @@ pipeline {
           steps {
             // Lógica para lidar com o commit do GitHub
             echo "GitHub commit detected"
-    }
-}
-        stage('Build'){
+         }
+      }
+       stage('Build'){
             steps{
               echo "Building the project"
             }
@@ -21,7 +21,8 @@ pipeline {
     }
     post {
         always {
-            emailext body: 'Hello ',  to: '4117andreiagraca@aefv.edu.pt, patriciagameiroit@gmail.com',recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+            emailext body: 'Testxi Email _ Jenkins', subject: 'Email Testxi', to: '4117andreiagraca@aefv.edu.pt , patriciagameiroit@gmail.co'
+          
         }
     }
 }
