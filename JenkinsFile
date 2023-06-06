@@ -21,7 +21,7 @@ pipeline {
     }
     post {
         always {
-            emailext body: 'Testxi Email _ Jenkins', subject: 'Email Testxi', to: '4117andreiagraca@aefv.edu.pt , patriciagameiroit@gmail.co'
+            emailext body: 'Testxi Email _ Jenkins', subject: 'Email Testxi', to: '4117andreiagraca@aefv.edu.pt , patriciagameiroit@gmail.com'
           
         }
     }
