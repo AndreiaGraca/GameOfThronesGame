@@ -66,7 +66,7 @@ function QuestionForm({ questions, username }) {
       questions: userAnswers
     };
 
-    fetch('https://localhost:7094/UserScore/Post', {
+    fetch('http://localhost:7094/UserScore/Post', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ function QuestionForm({ questions, username }) {
   const fetchNewGame = () => {
     setLoadingTryAgain(true);
 
-    fetch('https://localhost:7094/NewGame/Get')
+    fetch('http://localhost:7094/NewGame/Get')
       .then(response => response.json())
       .then(data => {
         setSelectedQuestions(data.result);
@@ -118,7 +118,9 @@ function QuestionForm({ questions, username }) {
       <div>
         <p>Score: {scoreResult.score}</p>
         <p>Favorite Character: {scoreResult.favoriteCharacter}</p>
-        <button type="button" onClick={handleTryAgain} disabled={loadingTryAgain}>
+        <button type="submit" onClick={handleTryAgain}
+          disabled={loadingTryAgain} className="btn btn-secondary mt-4"
+        >
           {loadingTryAgain ? 'Loading...' : 'Try Again'}
         </button>
       </div>
@@ -126,14 +128,14 @@ function QuestionForm({ questions, username }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="container">
       {currentQuestion && (
         <div>
-          <p>{currentQuestion.quote}</p>
+          <p className="mt-4">{currentQuestion.quote}</p>
           {currentQuestion.options.map((option, optionIndex) => (
             <button
               key={optionIndex}
-              className={showOutcome && option.isCorrect ? 'correct' : showOutcome && option.isSelected ? 'wrong' : ''}
+              className={`btn btn-block mt-2 ${showOutcome && option.isCorrect ? 'btn-success' : showOutcome && option.isSelected ? 'btn-danger' : 'btn btn-outline-secondary'}`}
               onClick={() => handleOptionClick(optionIndex)}
               disabled={showOutcome}
             >
@@ -141,9 +143,9 @@ function QuestionForm({ questions, username }) {
             </button>
           ))}
           {showOutcome && (
-            <div className="outcome">
+            <div className="outcome mt-2">
               {selectedOption && (
-                <p className={selectedOption.isCorrect ? 'correct' : 'wrong'}>
+                <p className={selectedOption.isCorrect ? 'text-success' : 'text-danger'}>
                   {selectedOption.isCorrect ? 'CORRECT!' : 'WRONG!'}
                 </p>
               )}
@@ -152,17 +154,56 @@ function QuestionForm({ questions, username }) {
         </div>
       )}
       {currentQuestionIndex < selectedQuestions.length - 1 && showOutcome && (
-        <button type="button" onClick={handleNextQuestion}>
+        <button type="button" onClick={handleNextQuestion} className="btn btn-secondary mt-4">
           Next
         </button>
       )}
       {currentQuestionIndex === selectedQuestions.length - 1 && showOutcome && (
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="btn btn-secondary mt-4">
           {loading ? 'Submitting...' : 'Submit'}
         </button>
       )}
     </form>
   );
+
+  // return (
+  //   <form onSubmit={handleSubmit}>
+  //     {currentQuestion && (
+  //       <div>
+  //         <p>{currentQuestion.quote}</p>
+  //         {currentQuestion.options.map((option, optionIndex) => (
+  //           <button
+  //             key={optionIndex}
+  //             className={showOutcome && option.isCorrect ? 'correct' : showOutcome && option.isSelected ? 'wrong' : ''}
+  //             onClick={() => handleOptionClick(optionIndex)}
+  //             disabled={showOutcome}
+  //           >
+  //             {option.option}
+  //           </button>
+  //         ))}
+  //         {showOutcome && (
+  //           <div className="outcome">
+  //             {selectedOption && (
+  //               <p className={selectedOption.isCorrect ? 'correct' : 'wrong'}>
+  //                 {selectedOption.isCorrect ? 'CORRECT!' : 'WRONG!'}
+  //               </p>
+  //             )}
+  //           </div>
+  //         )}
+  //       </div>
+  //     )}
+  //     {currentQuestionIndex < selectedQuestions.length - 1 && showOutcome && (
+  //       <button type="button" onClick={handleNextQuestion}>
+  //         Next
+  //       </button>
+  //     )}
+  //     {currentQuestionIndex === selectedQuestions.length - 1 && showOutcome && (
+  //       <button type="submit" disabled={loading}>
+  //         {loading ? 'Submitting...' : 'Submit'}
+  //       </button>
+  //     )}
+  //   </form>
+  // );
 }
 
 export default QuestionForm;

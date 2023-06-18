@@ -19,7 +19,7 @@ function NewGameComponent() {
     const enteredUsername = event.target.username.value;
     setUsername(enteredUsername);
 
-    fetch('https://localhost:7094/NewGame/Get')
+    fetch('http://localhost:7094/NewGame/Get')
       .then(response => response.json())
       .then(data => {
         setQuestions(data.result);
@@ -35,14 +35,17 @@ function NewGameComponent() {
   return (
     <div>
       {!showQuestions ? (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <input type="text" name="username" required />
-          </label>
-          <button type="submit" disabled={loading}>
+        <form className="container" onSubmit={handleSubmit}>
+
+          <div class="form-group">
+              <label for="username" >Username</label>
+              <input type="text" className="form-control" name="username" required  placeholder="Enter your username" />
+          </div>
+
+          <button type="submit" className="btn btn-outline-secondary">
             {loading ? 'Loading...' : 'New Game'}
           </button>
+
         </form>
       ) : (
         <QuestionForm questions={questions} username={username} />
