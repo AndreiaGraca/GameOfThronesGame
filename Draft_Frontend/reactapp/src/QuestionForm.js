@@ -166,44 +166,6 @@ function QuestionForm({ questions, username }) {
     </form>
   );
 
-  // return (
-  //   <form onSubmit={handleSubmit}>
-  //     {currentQuestion && (
-  //       <div>
-  //         <p>{currentQuestion.quote}</p>
-  //         {currentQuestion.options.map((option, optionIndex) => (
-  //           <button
-  //             key={optionIndex}
-  //             className={showOutcome && option.isCorrect ? 'correct' : showOutcome && option.isSelected ? 'wrong' : ''}
-  //             onClick={() => handleOptionClick(optionIndex)}
-  //             disabled={showOutcome}
-  //           >
-  //             {option.option}
-  //           </button>
-  //         ))}
-  //         {showOutcome && (
-  //           <div className="outcome">
-  //             {selectedOption && (
-  //               <p className={selectedOption.isCorrect ? 'correct' : 'wrong'}>
-  //                 {selectedOption.isCorrect ? 'CORRECT!' : 'WRONG!'}
-  //               </p>
-  //             )}
-  //           </div>
-  //         )}
-  //       </div>
-  //     )}
-  //     {currentQuestionIndex < selectedQuestions.length - 1 && showOutcome && (
-  //       <button type="button" onClick={handleNextQuestion}>
-  //         Next
-  //       </button>
-  //     )}
-  //     {currentQuestionIndex === selectedQuestions.length - 1 && showOutcome && (
-  //       <button type="submit" disabled={loading}>
-  //         {loading ? 'Submitting...' : 'Submit'}
-  //       </button>
-  //     )}
-  //   </form>
-  // );
 }
 
 export default QuestionForm;
