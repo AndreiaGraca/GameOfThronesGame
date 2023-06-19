@@ -37,8 +37,8 @@ function NewGameComponent() {
       {!showQuestions ? (
         <form className="container" onSubmit={handleSubmit}>
 
-          <div class="form-group">
-              <label for="username" >Username</label>
+          <div className="form-group">
+              <label htmlFor="username" >Username</label>
               <input type="text" className="form-control" name="username" required  placeholder="Enter your username" />
           </div>
 

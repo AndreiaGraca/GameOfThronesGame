@@ -129,6 +129,17 @@ function QuestionForm({ questions, username }) {
 
   return (
     <form onSubmit={handleSubmit} className="container">
+
+      <div>
+
+        <div className="d-flex">
+          <button type="button" className="btn btn-secondary">ScoreBoard</button>
+
+          <button type="button" className="btn btn-secondary ml-auto">Change Username</button>
+        </div>
+
+      </div>
+
       {currentQuestion && (
         <div>
           <p className="mt-4">{currentQuestion.quote}</p>
@@ -154,14 +165,18 @@ function QuestionForm({ questions, username }) {
         </div>
       )}
       {currentQuestionIndex < selectedQuestions.length - 1 && showOutcome && (
-        <button type="button" onClick={handleNextQuestion} className="btn btn-secondary mt-4">
-          Next
-        </button>
+        <div className="d-flex justify-content-end">
+          <button type="button" onClick={handleNextQuestion} className="btn btn-secondary mt-4">
+            Next
+          </button>
+        </div>
       )}
       {currentQuestionIndex === selectedQuestions.length - 1 && showOutcome && (
-        <button type="submit" disabled={loading} className="btn btn-secondary mt-4">
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
+        <div className="d-flex justify-content-end">
+          <button type="submit" disabled={loading} className="btn btn-secondary mt-4">
+            {loading ? 'Submitting...' : 'Submit'}
+          </button>
+        </div>
       )}
     </form>
   );
