@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - /path/on/host:/data/db
+    networks:
+      - gotnetwork
+
+  crawler:
+    build:
+      context: ./Crawler
+      dockerfile: Dockerfile
+    ports:
+      - "7094:80"
+      #- "7094:443"
+    networks:
+      - gotnetwork
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - gotnetwork
+networks:
+  gotnetwork:
