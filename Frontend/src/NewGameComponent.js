@@ -19,7 +19,7 @@ function NewGameComponent() {
     const enteredUsername = event.target.username.value;
     setUsername(enteredUsername);
 
-    fetch('http://192.168.1.251:7094/NewGame/Get')
+    fetch('http://localhost:7094/NewGame/Get')
       .then(response => response.json())
       .then(data => {
         setQuestions(data.result);

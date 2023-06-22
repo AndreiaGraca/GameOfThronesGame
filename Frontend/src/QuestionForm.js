@@ -66,7 +66,7 @@ function QuestionForm({ questions, username }) {
       questions: userAnswers
     };
 
-    fetch('http://192.168.1.251:7094/UserScore/Post', {
+    fetch('http://localhost:7094/UserScore/Post', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ function QuestionForm({ questions, username }) {
   const fetchNewGame = () => {
     setLoadingTryAgain(true);
 
-    fetch('http://192.168.1.251:7094/NewGame/Get')
+    fetch('http://localhost:7094/NewGame/Get')
       .then(response => response.json())
       .then(data => {
         setSelectedQuestions(data.result);
@@ -120,7 +120,7 @@ function QuestionForm({ questions, username }) {
   const openModal = () => {
     setScoreBoard(true);
 
-    fetch('http://192.168.1.251:7094/TopPlayers/Get')
+    fetch('http://localhost:7094/TopPlayers/Get')
       .then(response => response.json())
       .then(data => {
         setGameStats(data)
